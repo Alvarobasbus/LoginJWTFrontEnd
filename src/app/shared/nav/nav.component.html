@@ -13,7 +13,7 @@
             <a class="nav-link" routerLink="/iniciar-sesion">Iniciar Sesion</a>
           </li>
           <li class="nav-item" *ngIf="userLoginOn" >
-            <a class="nav-link" aria-disabled="true" routerLink="/inicio">Cerrar Sesion</a>
+            <a class="nav-link" aria-disabled="true" (click)="logout()" routerLink="/inicio">Cerrar Sesion</a>
           </li>
         </ul>
       </div>

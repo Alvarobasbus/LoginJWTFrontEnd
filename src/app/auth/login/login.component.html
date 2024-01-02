@@ -1,7 +1,7 @@
 <form [formGroup]="loginForm">
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label">Usuario</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="usuario">
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="username">
       
         <div  *ngIf="usuario.invalid && (usuario.dirty || usuario.touched)" class="text-danger">
             <div *ngIf="usuario.errors?.['required']">Nombre de usuario es requerido.</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginServiceService } from 'src/app/services/auth/login-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,13 +9,15 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit{
 
   userLoginOn:boolean=false;
-
-  constructor(){
-
-  }
+  constructor(private loginService:LoginServiceService) { }
 
   ngOnInit(): void {
-    
+    this.loginService.currentUserLoginOn.subscribe({
+      next:(userLoginOn) => {
+        this.userLoginOn=userLoginOn;
+      }
+    });
+
   }
 
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginServiceService } from 'src/app/services/auth/login-service.service';
 
 @Component({
   selector: 'app-nav',
@@ -8,13 +10,23 @@ import { Component, OnInit } from '@angular/core';
 export class NavComponent implements OnInit{
 
   userLoginOn:boolean=false;
-
-  constructor(){
-
-  }
+  constructor(private loginService:LoginServiceService, private router:Router) { }
 
   ngOnInit(): void {
-    
+    this.loginService.currentUserLoginOn.subscribe(
+      {
+        next:(userLoginOn) => {
+          this.userLoginOn=userLoginOn;
+        }
+      }
+    )
+  }
+
+  logout()
+  {
+    this.loginService.logout();
+    this.router.navigate(['/inicio'])
   }
 
 }
+

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginRequest } from 'src/app/interface/LoginRequest';
+import { LoginServiceService } from 'src/app/services/auth/login-service.service';
 
 @Component({
   selector: 'app-login',
@@ -9,13 +11,14 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  loginError:string="";
   loginForm=this.formuBuilder.group({
-    usuario:['', [Validators.required]],
+    username:['', [Validators.required]],
     //email:['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
 
-  constructor(private formuBuilder: FormBuilder, private router: Router){
+  constructor(private formuBuilder: FormBuilder, private router: Router, private loginService: LoginServiceService){
 
   }
 
@@ -25,7 +28,7 @@ export class LoginComponent implements OnInit {
 
 
   get usuario(){
-    return this.loginForm.controls.usuario;
+    return this.loginForm.controls.username;
   }
   get password(){
     return this.loginForm.controls.password;
@@ -34,11 +37,24 @@ export class LoginComponent implements OnInit {
 
   login(){
     if(this.loginForm.valid){
-      console.log('llamar al servicio de login');
-      this.router.navigateByUrl('inicio');
-      this.loginForm.reset;
+      this.loginError="";
+      this.loginService.login(this.loginForm.value as LoginRequest).subscribe({
+        next: (userData) => {
+          console.log(userData);
+        },
+        error: (errorData) => {
+          console.error(errorData);
+          this.loginError=errorData;
+        },
+        complete: () => {
+          console.info("Login completo");
+          this.router.navigateByUrl('/inicio');
+          this.loginForm.reset();
+        }
+      })
     }else{
-      this.loginForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched(); // para marcar todos los inputs para que sean visibles cual faltan
+      alert("Error al ingresar los datos.");
     }
   }
 
